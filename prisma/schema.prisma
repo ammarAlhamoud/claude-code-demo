@@ -1,0 +1,32 @@
+// Prisma schema for the Budgeting Management app.
+// Datasource: local SQLite file. See lib/db.ts for the client singleton.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Category {
+  id           String        @id @default(cuid())
+  name         String
+  type         String // "income" | "expense"
+  monthlyLimit Float? // budget limit (expense categories only)
+  color        String // hex color used in charts
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+}
+
+model Transaction {
+  id         String   @id @default(cuid())
+  amount     Float
+  type       String // "income" | "expense"
+  date       DateTime
+  note       String?
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
