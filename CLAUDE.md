@@ -25,7 +25,7 @@ There is no test runner configured. Verification is done via `tsc --noEmit`, `np
 - **Next.js 16** (App Router, Turbopack), **React 19**, **Tailwind v4**, **Recharts 3**.
 - **Prisma 7** — this is a major version with breaking changes from older Prisma. Do not assume pre-7 conventions:
   - The schema datasource has **no `url`**; the connection string lives in `prisma.config.ts` (`datasource.url = env("DATABASE_URL")`), loaded from `.env` (`DATABASE_URL="file:./prisma/dev.db"`, gitignored).
-  - Prisma 7 requires a **driver adapter** — there is no Rust engine. We use `@prisma/adapter-better-sqlite3`. Any `new PrismaClient()` must pass `{ adapter }` (see `lib/db.ts` and `prisma/seed.ts`).
+- Prisma 7 requires a **driver adapter** — there is no Rust engine. We use `@prisma/adapter-better-sqlite3`. Any `new PrismaClient()` must pass `{ adapter }` (see `lib/db.ts` and `prisma/seed.ts`).
   - The generated client is output to **`generated/prisma`** (not `@prisma/client`); import it as `@/generated/prisma`.
   - The seed command is declared in `prisma.config.ts` (`migrations.seed`), not in `package.json`.
 - Path alias: `@/*` → repo root (e.g. `@/lib/db`, `@/components/...`).
