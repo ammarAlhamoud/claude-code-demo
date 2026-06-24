@@ -44,3 +44,6 @@ next-env.d.ts
 /generated
 /prisma/*.db
 /prisma/*.db-journal
+
+# claude code
+.claude/agent-memory/
