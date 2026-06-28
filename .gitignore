@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma / database
+/generated
+/prisma/*.db
+/prisma/*.db-journal
+
+# claude code
+.claude/agent-memory/
