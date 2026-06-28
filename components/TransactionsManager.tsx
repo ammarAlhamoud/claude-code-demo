@@ -41,7 +41,7 @@ export default function TransactionsManager({
   async function reload() {
     const res = await fetch("/api/transactions");
     setTransactions(await res.json());
-    router.refresh(); // keep dashboard/server data in sync
+    router.refresh();
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -95,20 +95,21 @@ export default function TransactionsManager({
   }
 
   const inputCls =
-    "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none";
+    "w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100";
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]">
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="h-fit space-y-4 rounded-xl border border-slate-200 bg-white p-5"
+        className="h-fit space-y-4 rounded-xl border border-gray-100 bg-white p-5 shadow-sm"
       >
-        <h2 className="font-semibold text-slate-800">
-          {editingId ? "Edit transaction" : "Add transaction"}
+        <h2 className="text-sm font-medium text-gray-500">
+          {editingId ? "Edit transaction" : "New transaction"}
         </h2>
 
-        <div className="flex gap-2">
+        {/* Type toggle */}
+        <div className="flex rounded-lg border border-gray-200 p-0.5">
           {(["expense", "income"] as TxType[]).map((t) => (
             <button
               key={t}
@@ -117,12 +118,10 @@ export default function TransactionsManager({
                 setType(t);
                 setCategoryId("");
               }}
-              className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium capitalize ${
+              className={`flex-1 rounded-md py-1.5 text-sm font-medium capitalize transition-colors ${
                 type === t
-                  ? t === "income"
-                    ? "border-green-600 bg-green-50 text-green-700"
-                    : "border-red-600 bg-red-50 text-red-700"
-                  : "border-slate-300 text-slate-500"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-400 hover:text-gray-600"
               }`}
             >
               {t}
@@ -131,7 +130,7 @@ export default function TransactionsManager({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-500">
+          <label className="mb-1.5 block text-xs font-medium text-gray-500">
             Amount
           </label>
           <input
@@ -146,7 +145,7 @@ export default function TransactionsManager({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-500">
+          <label className="mb-1.5 block text-xs font-medium text-gray-500">
             Category
           </label>
           <select
@@ -164,7 +163,7 @@ export default function TransactionsManager({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-500">
+          <label className="mb-1.5 block text-xs font-medium text-gray-500">
             Date
           </label>
           <input
@@ -176,31 +175,31 @@ export default function TransactionsManager({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-500">
-            Note (optional)
+          <label className="mb-1.5 block text-xs font-medium text-gray-500">
+            Note
           </label>
           <input
             type="text"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             className={inputCls}
-            placeholder="e.g. weekly shop"
+            placeholder="Optional"
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 pt-1">
           <button
             type="submit"
             disabled={busy}
-            className="flex-1 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50"
+            className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:opacity-50"
           >
-            {editingId ? "Save changes" : "Add"}
+            {editingId ? "Save" : "Add"}
           </button>
           {editingId && (
             <button
               type="button"
               onClick={resetForm}
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600"
+              className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50"
             >
               Cancel
             </button>
@@ -209,47 +208,48 @@ export default function TransactionsManager({
       </form>
 
       {/* List */}
-      <div className="rounded-xl border border-slate-200 bg-white">
-        <div className="border-b border-slate-100 px-5 py-3">
-          <h2 className="font-semibold text-slate-800">
-            All transactions ({transactions.length})
+      <div className="rounded-xl border border-gray-100 bg-white shadow-sm">
+        <div className="border-b border-gray-50 px-5 py-3.5">
+          <h2 className="text-sm font-medium text-gray-500">
+            All transactions
+            <span className="ml-1.5 rounded-md bg-gray-100 px-1.5 py-0.5 text-xs text-gray-400">
+              {transactions.length}
+            </span>
           </h2>
         </div>
         {transactions.length === 0 ? (
-          <p className="py-12 text-center text-sm text-slate-400">
-            No transactions yet — add one on the left.
+          <p className="py-12 text-center text-sm text-gray-400">
+            No transactions yet.
           </p>
         ) : (
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-gray-50">
             {transactions.map((t) => (
               <li
                 key={t.id}
                 className="flex items-center justify-between gap-4 px-5 py-3"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
                   <span
-                    className="h-2.5 w-2.5 shrink-0 rounded-full"
+                    className="h-2 w-2 shrink-0 rounded-full"
                     style={{ background: t.category?.color }}
                   />
-                  <div>
-                    <p className="text-sm font-medium text-slate-800">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-gray-800">
                       {t.category?.name}
                       {t.note && (
-                        <span className="font-normal text-slate-400">
+                        <span className="font-normal text-gray-400">
                           {" "}
                           · {t.note}
                         </span>
                       )}
                     </p>
-                    <p className="text-xs text-slate-400">
-                      {formatDate(t.date)}
-                    </p>
+                    <p className="text-xs text-gray-400">{formatDate(t.date)}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex shrink-0 items-center gap-4">
                   <span
-                    className={`text-sm font-semibold ${
-                      t.type === "income" ? "text-green-600" : "text-red-600"
+                    className={`tabular-nums text-sm font-medium ${
+                      t.type === "income" ? "text-emerald-600" : "text-rose-600"
                     }`}
                   >
                     {t.type === "income" ? "+" : "-"}
@@ -257,13 +257,13 @@ export default function TransactionsManager({
                   </span>
                   <button
                     onClick={() => startEdit(t)}
-                    className="text-xs font-medium text-blue-600 hover:underline"
+                    className="text-xs text-gray-400 transition-colors hover:text-gray-700"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(t.id)}
-                    className="text-xs font-medium text-red-500 hover:underline"
+                    className="text-xs text-gray-400 transition-colors hover:text-rose-600"
                   >
                     Delete
                   </button>

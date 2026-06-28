@@ -21,29 +21,26 @@ export default async function ReportsPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
-        <p className="text-sm text-slate-500">
-          Visualize where your money goes over time.
-        </p>
+        <h1 className="text-xl font-semibold text-gray-900">Reports</h1>
       </header>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="mb-4 font-semibold text-slate-800">
+      <section className="rounded-xl border border-gray-100 shadow-sm bg-white p-5">
+        <h2 className="mb-4 text-sm font-medium text-gray-500">
           Income vs expenses (last 6 months)
         </h2>
         <TrendBarChart data={trend} />
       </section>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <section className="rounded-xl border border-slate-200 bg-white p-5">
-          <h2 className="mb-4 font-semibold text-slate-800">
+        <section className="rounded-xl border border-gray-100 shadow-sm bg-white p-5">
+          <h2 className="mb-4 text-sm font-medium text-gray-500">
             Spending by category (this month)
           </h2>
           <CategoryPieChart data={spend} />
         </section>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-5">
-          <h2 className="mb-4 font-semibold text-slate-800">
+        <section className="rounded-xl border border-gray-100 shadow-sm bg-white p-5">
+          <h2 className="mb-4 text-sm font-medium text-gray-500">
             Category breakdown
           </h2>
           <ul className="divide-y divide-slate-100">
