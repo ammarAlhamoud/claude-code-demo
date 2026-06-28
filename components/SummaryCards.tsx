@@ -4,22 +4,22 @@ import type { MonthlySummary } from "@/lib/types";
 export default function SummaryCards({ summary }: { summary: MonthlySummary }) {
   const cards = [
     {
-      label: "Income (this month)",
+      label: "Income",
       value: summary.income,
-      accent: "text-green-600",
-      bg: "bg-green-50",
+      valueColor: "text-emerald-600",
+      accent: "bg-emerald-500",
     },
     {
-      label: "Expenses (this month)",
+      label: "Expenses",
       value: summary.expenses,
-      accent: "text-red-600",
-      bg: "bg-red-50",
+      valueColor: "text-rose-600",
+      accent: "bg-rose-500",
     },
     {
       label: "Balance",
       value: summary.balance,
-      accent: summary.balance >= 0 ? "text-slate-900" : "text-red-600",
-      bg: "bg-slate-50",
+      valueColor: summary.balance >= 0 ? "text-gray-900" : "text-rose-600",
+      accent: "bg-indigo-500",
     },
   ];
 
@@ -28,12 +28,20 @@ export default function SummaryCards({ summary }: { summary: MonthlySummary }) {
       {cards.map((c) => (
         <div
           key={c.label}
-          className={`rounded-xl border border-slate-200 ${c.bg} p-5`}
+          className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm"
         >
-          <p className="text-sm font-medium text-slate-500">{c.label}</p>
-          <p className={`mt-2 text-2xl font-bold ${c.accent}`}>
-            {formatCurrency(c.value)}
-          </p>
+          <div className={`h-0.5 ${c.accent}`} />
+          <div className="p-5">
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+              {c.label}
+            </p>
+            <p
+              className={`mt-2 text-2xl font-semibold tracking-tight ${c.valueColor}`}
+            >
+              {formatCurrency(c.value)}
+            </p>
+            <p className="mt-0.5 text-xs text-gray-400">this month</p>
+          </div>
         </div>
       ))}
     </div>

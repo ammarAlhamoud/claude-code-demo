@@ -24,36 +24,37 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-8">
       <header>
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-        <p className="text-sm text-slate-500">Your finances at a glance.</p>
+        <h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>
       </header>
 
       <SummaryCards summary={summary} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <section className="rounded-xl border border-slate-200 bg-white p-5">
-          <h2 className="mb-3 font-semibold text-slate-800">
+        <section className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+          <h2 className="mb-4 text-sm font-medium text-gray-500">
             Spending by category
           </h2>
           <CategoryPieChart data={spend} />
         </section>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-5">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="font-semibold text-slate-800">Recent activity</h2>
+        <section className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-sm font-medium text-gray-500">
+              Recent activity
+            </h2>
             <Link
               href="/transactions"
-              className="text-sm font-medium text-blue-600 hover:underline"
+              className="text-xs font-medium text-indigo-600 hover:text-indigo-800"
             >
               View all
             </Link>
           </div>
           {recent.length === 0 ? (
-            <p className="py-8 text-center text-sm text-slate-400">
+            <p className="py-8 text-center text-sm text-gray-400">
               No transactions yet.
             </p>
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-gray-50">
               {recent.map((t) => (
                 <li
                   key={t.id}
@@ -61,21 +62,21 @@ export default async function DashboardPage() {
                 >
                   <div className="flex items-center gap-3">
                     <span
-                      className="h-2.5 w-2.5 rounded-full"
+                      className="h-2 w-2 rounded-full"
                       style={{ background: t.category?.color }}
                     />
                     <div>
-                      <p className="text-sm font-medium text-slate-800">
+                      <p className="text-sm font-medium text-gray-800">
                         {t.category?.name}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-gray-400">
                         {formatDate(t.date)}
                       </p>
                     </div>
                   </div>
                   <span
-                    className={`text-sm font-semibold ${
-                      t.type === "income" ? "text-green-600" : "text-red-600"
+                    className={`text-sm font-medium tabular-nums ${
+                      t.type === "income" ? "text-emerald-600" : "text-rose-600"
                     }`}
                   >
                     {t.type === "income" ? "+" : "-"}

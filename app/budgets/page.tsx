@@ -15,10 +15,7 @@ export default async function BudgetsPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <header>
-        <h1 className="text-2xl font-bold text-slate-900">Budgets</h1>
-        <p className="text-sm text-slate-500">
-          Set monthly spending limits and track your progress.
-        </p>
+        <h1 className="text-xl font-semibold text-gray-900">Budgets</h1>
       </header>
       <BudgetsManager categories={categories} spend={spend} />
     </div>
