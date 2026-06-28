@@ -43,3 +43,35 @@ Single-DB budgeting app ("Budgeteer"). Two models — `Category` and `Transactio
 ## Date handling (important gotcha)
 
 All month bucketing and date display is done in **UTC**, not local time. Calendar dates entered by the user are stored as UTC midnight, and `lib/calculations.ts` uses `Date.UTC(...)` / `getUTCMonth()` throughout (`monthBounds`, `monthlyTrend`) so month membership is timezone-independent. Display uses `formatDate()` with `timeZone: "UTC"`. When touching anything date-related, stay in UTC or you will reintroduce month-boundary off-by-one bugs.
+
+## UI design system
+
+The app uses a consistent design language — preserve it when adding or editing components.
+
+**Colors:**
+- Accent: `indigo-600` / `indigo-50` / `indigo-700` — primary buttons, active nav state, focus rings
+- Income: `emerald-600` (amounts), `emerald-500` (accents)
+- Expenses: `rose-600` (amounts), `rose-500` (accents)
+- Neutrals: `gray-900` text, `gray-500` labels, `gray-400` muted, `gray-200` borders, `gray-100` card borders, `gray-50` input backgrounds
+
+**No emojis.** Navigation and UI icons use inline SVG components defined in their respective files.
+
+**Cards:** `rounded-xl border border-gray-100 bg-white shadow-sm` — no colored backgrounds.
+
+**Inputs:** `border border-gray-200 bg-gray-50 … focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100` — gray fill that clears to white on focus.
+
+**Primary button:** `bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg`.
+
+**Type toggles (expense/income):** pill container `rounded-lg border border-gray-200 p-0.5` with active child `bg-white shadow-sm text-gray-900` and inactive `text-gray-400`.
+
+**Progress bars (budgets):** `h-1.5 rounded-full` — color by spend ratio: `bg-indigo-500` (<80%), `bg-amber-400` (≥80%), `bg-rose-500` (≥100%).
+
+**Page headers:** `text-xl font-semibold text-gray-900`, no subtitle paragraphs.
+
+**Section headers inside cards:** `text-sm font-medium text-gray-500`.
+
+**Amounts:** always `tabular-nums`, income `text-emerald-600`, expense `text-rose-600`.
+
+## Tooling
+
+A `PostToolUse` hook in `.claude/settings.json` runs `prettier --write` on every file after `Write` or `Edit`. Files are auto-formatted — no need to run prettier manually.
