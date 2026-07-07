@@ -47,3 +47,7 @@ next-env.d.ts
 
 # claude code
 .claude/agent-memory/
+
+# local verification artifacts (browser screenshots, playwright MCP output)
+/.playwright-mcp/
+/*.png
