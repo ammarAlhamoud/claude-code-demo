@@ -27,7 +27,24 @@ export default function TransactionsManager({
   const [date, setDate] = useState(todayIso());
   const [note, setNote] = useState("");
 
+  const [filterType, setFilterType] = useState<"all" | TxType>("all");
+  const [filterCategoryId, setFilterCategoryId] = useState("");
+  const [filterNote, setFilterNote] = useState("");
+
   const categoriesForType = categories.filter((c) => c.type === type);
+
+  const filterCategories =
+    filterType === "all"
+      ? categories
+      : categories.filter((c) => c.type === filterType);
+
+  const filteredTransactions = transactions.filter((t) => {
+    if (filterType !== "all" && t.type !== filterType) return false;
+    if (filterCategoryId && t.categoryId !== filterCategoryId) return false;
+    if (filterNote && !t.note?.toLowerCase().includes(filterNote.toLowerCase()))
+      return false;
+    return true;
+  });
 
   function resetForm() {
     setEditingId(null);
@@ -96,6 +113,9 @@ export default function TransactionsManager({
 
   const inputCls =
     "w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100";
+
+  const filterInputCls =
+    "rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-indigo-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-100";
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]">
@@ -213,17 +233,62 @@ export default function TransactionsManager({
           <h2 className="text-sm font-medium text-gray-500">
             All transactions
             <span className="ml-1.5 rounded-md bg-gray-100 px-1.5 py-0.5 text-xs text-gray-400">
-              {transactions.length}
+              {filteredTransactions.length}
             </span>
           </h2>
         </div>
-        {transactions.length === 0 ? (
+
+        {/* Filter bar */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-gray-50 px-5 py-3">
+          <div className="flex rounded-lg border border-gray-200 p-0.5">
+            {(["all", "expense", "income"] as const).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => {
+                  setFilterType(t);
+                  setFilterCategoryId("");
+                }}
+                className={`rounded-md px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                  filterType === t
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-400 hover:text-gray-600"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          <select
+            value={filterCategoryId}
+            onChange={(e) => setFilterCategoryId(e.target.value)}
+            className={filterInputCls}
+          >
+            <option value="">All categories</option>
+            {filterCategories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={filterNote}
+            onChange={(e) => setFilterNote(e.target.value)}
+            placeholder="Search notes…"
+            className={`${filterInputCls} min-w-[140px] flex-1`}
+          />
+        </div>
+
+        {filteredTransactions.length === 0 ? (
           <p className="py-12 text-center text-sm text-gray-400">
-            No transactions yet.
+            {transactions.length === 0
+              ? "No transactions yet."
+              : "No transactions match the current filters."}
           </p>
         ) : (
           <ul className="divide-y divide-gray-50">
-            {transactions.map((t) => (
+            {filteredTransactions.map((t) => (
               <li
                 key={t.id}
                 className="flex items-center justify-between gap-4 px-5 py-3"

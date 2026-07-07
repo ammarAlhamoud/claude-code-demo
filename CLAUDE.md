@@ -75,3 +75,16 @@ The app uses a consistent design language — preserve it when adding or editing
 ## Tooling
 
 A `PostToolUse` hook in `.claude/settings.json` runs `prettier --write` on every file after `Write` or `Edit`. Files are auto-formatted — no need to run prettier manually.
+
+## Planned features
+
+Mini features scoped for this app. Implement each on its own branch (`feat/<slug>`). Mark `[x]` when shipped.
+
+- [x] **Transaction filter & search** — type toggle (All/Income/Expense), category dropdown, note text search in `TransactionsManager.tsx`
+- [ ] **Savings rate card** — 4th summary card on Dashboard showing `balance / income * 100`; add `savingsRate` to `MonthlySummary` in `lib/calculations.ts`
+- [ ] **Duplicate transaction** — "Duplicate" button pre-fills the form with same values but today's date; pure UI change in `TransactionsManager.tsx`
+- [ ] **CSV export** — client-side button exports the currently-filtered list to a `.csv` download; no API changes
+- [ ] **Month navigator** — `MonthPicker` component + `?month=YYYY-MM` URL param threads through Dashboard and Budgets pages; unlocks existing `ref`-param calculations for any month
+- [ ] **Category spending trend chart** — new `categoryTrend()` in `lib/calculations.ts` + `CategoryTrendChart` component + category selector on the Reports page
+- [ ] **Budget month comparison** — show last month's spend alongside this month's in `BudgetsManager.tsx`
+- [ ] **Year-to-date summary** — `ytdSummary()` in `lib/calculations.ts` + compact stat row at top of Reports page
